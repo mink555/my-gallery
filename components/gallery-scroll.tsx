@@ -72,7 +72,7 @@ export function GalleryScroll() {
       </section>
 
       {/* Infinite Gallery - Contained in its own section */}
-      <section className="relative z-20 w-full h-[50vh] md:h-[60vh] flex items-center overflow-hidden my-20">
+      <section className="relative z-20 w-full h-[65vh] md:h-[75vh] flex items-center overflow-x-hidden my-12 md:my-20">
         <div className="flex gap-24 md:gap-56 px-40 animate-infinite-scroll">
           {[...images, ...images].map((img, index) => (
             <GalleryImage

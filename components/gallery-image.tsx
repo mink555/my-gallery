@@ -22,7 +22,7 @@ export function GalleryImage({ src, alt, width, height, title, year, index, curr
 
   return (
     <div
-      className="relative flex-shrink-0 transition-all duration-1000 ease-in-out hover:scale-[1.02] hover:z-50 group"
+      className="relative flex-shrink-0 flex flex-col items-center transition-all duration-1000 ease-in-out hover:scale-[1.02] hover:z-50 group"
       style={{
         opacity: isActive ? 1 : 0.6,
       }}
@@ -35,6 +35,7 @@ export function GalleryImage({ src, alt, width, height, title, year, index, curr
           height: `calc(var(--img-height, ${height}px) + clamp(50px, 12vw, 140px))`,
         }}
       >
+        {/* ... frame contents ... */}
         {/* Outer Frame Shadow & Depth */}
         <div className="absolute inset-0 bg-[#3a2a0d] rounded-sm border border-[#59421a]/30" />
         
@@ -87,8 +88,8 @@ export function GalleryImage({ src, alt, width, height, title, year, index, curr
         ))}
       </div>
 
-      {/* Museum Label */}
-      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 px-4 py-3 bg-transparent group-hover:bg-[#0a0a0a]/20 backdrop-blur-[2px] transition-all duration-1000 min-w-[200px]">
+      {/* Museum Label - Moved into flow for better visibility on mobile */}
+      <div className="mt-8 px-4 py-3 bg-transparent transition-all duration-1000 min-w-[200px]">
         <div className="flex flex-col items-center gap-1.5">
           {/* Decorative Ornament Above Title */}
           <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent mb-1" />
