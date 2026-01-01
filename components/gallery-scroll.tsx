@@ -44,7 +44,6 @@ export function GalleryScroll() {
   }
 
   const handleSliderChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setIsAutoScrolling(false)
     const value = parseFloat(e.target.value)
     setScrollProgress(value)
     
@@ -118,12 +117,7 @@ export function GalleryScroll() {
         <div className="w-full max-w-2xl px-12 mt-12 flex flex-col items-center gap-4">
           <div className="flex justify-between w-full text-[9px] tracking-[0.4em] text-[#8e6d13] uppercase font-serif">
             <span>Archive 01</span>
-            <button 
-              onClick={() => setIsAutoScrolling(!isAutoScrolling)}
-              className="text-[#d4af37] hover:opacity-80 transition-opacity"
-            >
-              {isAutoScrolling ? 'Manual Mode' : 'Resume Auto-Flow'}
-            </button>
+            <span className="text-[#d4af37]">Continuous Flow</span>
             <span>Archive 20</span>
           </div>
           
