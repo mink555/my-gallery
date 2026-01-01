@@ -48,18 +48,25 @@ export function GalleryScroll() {
       {/* Title Section */}
       <div className="fixed inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
         <div className="text-center px-4 max-w-4xl">
-          <p className="text-[10px] tracking-[0.5em] text-[#8e6d13] mb-6 uppercase animate-pulse">The Eternal Moment</p>
-          <h2 className="font-serif text-5xl md:text-8xl font-light text-[#fcf6ba] mb-8 leading-tight tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] opacity-90">
-            Royal <span className="italic">Heritage</span>
-          </h2>
-          <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mb-8" />
-          <p className="text-xs tracking-[0.3em] text-[#a68a3a] uppercase font-light">Elegance in Motion</p>
+          <p className="text-[10px] tracking-[0.6em] text-[#8e6d13] mb-8 uppercase animate-pulse font-light">The Eternal Moment</p>
+          <div className="relative inline-block">
+            <h2 className="font-serif text-5xl md:text-9xl font-light text-[#fcf6ba] mb-4 leading-tight tracking-tighter drop-shadow-[0_4px_20px_rgba(0,0,0,1)] opacity-95">
+              Royal <span className="italic font-normal">Heritage</span>
+            </h2>
+            {/* Elegant underlining ornament */}
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-48 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-2 h-2 border border-[#d4af37] rotate-45 bg-black" />
+          </div>
+          <p className="mt-12 text-xs tracking-[0.4em] text-[#a68a3a] uppercase font-light leading-loose">
+            Curated by <br className="md:hidden" />
+            <span className="text-[#d4af37] tracking-[0.6em]">MinKyong Hwarang</span>
+          </p>
         </div>
       </div>
 
       {/* Infinite Gallery Container */}
       <div className="absolute inset-0 flex items-center overflow-hidden">
-        <div className="flex gap-16 md:gap-40 px-24 animate-infinite-scroll">
+        <div className="flex gap-20 md:gap-48 px-32 animate-infinite-scroll">
           {/* Duplicate set for infinite loop */}
           {[...images, ...images].map((img, index) => (
             <GalleryImage

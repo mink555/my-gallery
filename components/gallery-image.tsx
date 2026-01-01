@@ -88,14 +88,25 @@ export function GalleryImage({ src, alt, width, height, title, year, index, curr
       </div>
 
       {/* Museum Label */}
-      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 px-6 py-3 bg-[#0a0a0a]/90 backdrop-blur-sm border border-[#d4af37]/30 shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-4 group-hover:translate-y-0 min-w-[180px]">
-        <div className="flex flex-col items-center gap-1">
-          <div className="text-[10px] tracking-[0.4em] text-[#d4af37] font-serif uppercase text-center font-bold">
+      <div className="absolute -bottom-24 left-1/2 -translate-x-1/2 px-4 py-3 bg-transparent group-hover:bg-[#0a0a0a]/20 backdrop-blur-[2px] transition-all duration-1000 min-w-[200px]">
+        <div className="flex flex-col items-center gap-1.5">
+          {/* Decorative Ornament Above Title */}
+          <div className="w-12 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/40 to-transparent mb-1" />
+          
+          <div className="text-[11px] md:text-[12px] tracking-[0.6em] text-[#d4af37] font-serif uppercase text-center font-light leading-relaxed">
             {title}
           </div>
-          <div className="h-[0.5px] w-8 bg-[#d4af37]/40 my-1" />
-          <div className="text-[8px] tracking-[0.3em] text-[#8e6d13] font-serif uppercase text-center">
-            {year} &bull; Private Collection
+          
+          <div className="flex items-center gap-3 w-full">
+            <div className="h-[0.5px] flex-1 bg-gradient-to-r from-transparent to-[#8e6d13]/40" />
+            <div className="text-[8px] tracking-[0.4em] text-[#8e6d13] font-serif uppercase text-center opacity-80 italic">
+              {year}
+            </div>
+            <div className="h-[0.5px] flex-1 bg-gradient-to-l from-transparent to-[#8e6d13]/40" />
+          </div>
+          
+          <div className="text-[7px] tracking-[0.3em] text-[#59421a] font-serif uppercase text-center opacity-60">
+            MinKyong Hwarang Archive
           </div>
         </div>
       </div>
