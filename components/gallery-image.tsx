@@ -27,29 +27,29 @@ export function GalleryImage({ src, alt, width, height, index, currentIndex }: G
     >
       {/* Classic Museum Gilt Frame */}
       <div
-        className="relative p-12 flex items-center justify-center bg-[#1a0f0f]"
+        className="relative p-8 md:p-12 flex items-center justify-center bg-[#1a0f0f]"
         style={{
-          width: `${width + 120}px`,
-          height: `${height + 120}px`,
+          width: `calc(var(--img-width, ${width}px) + clamp(60px, 10vw, 120px))`,
+          height: `calc(var(--img-height, ${height}px) + clamp(60px, 10vw, 120px))`,
         }}
       >
         {/* Outer Frame Shadow & Depth */}
         <div className="absolute inset-0 bg-[#4d3a12] shadow-[0_40px_80px_-20px_rgba(0,0,0,0.9)] rounded-sm" />
         
         {/* Main Carved Frame (Rich Gold/Bronze) */}
-        <div className="absolute inset-2 bg-gradient-to-br from-[#bf953f] via-[#fcf6ba] to-[#aa771c] border-[16px] border-[#8e6d13] shadow-2xl overflow-hidden">
+        <div className="absolute inset-1 md:inset-2 bg-gradient-to-br from-[#bf953f] via-[#fcf6ba] to-[#aa771c] border-[8px] md:border-[16px] border-[#8e6d13] shadow-2xl overflow-hidden">
           {/* Subtle Gilded Texture */}
           <div className="absolute inset-0 opacity-30 mix-blend-multiply bg-[url('https://www.transparenttextures.com/patterns/gold-dust.png')]" />
         </div>
 
         {/* Deep Beveled Inner Edge (Classic Museum Style) */}
-        <div className="absolute inset-[34px] border-[12px] border-[#59421a] shadow-[inset_0_0_30px_rgba(0,0,0,0.8)]" />
+        <div className="absolute inset-[20px] md:inset-[34px] border-[6px] md:border-[12px] border-[#59421a] shadow-[inset_0_0_30px_rgba(0,0,0,0.8)]" />
         
         {/* Black Velvet Liner (Matte effect) */}
-        <div className="absolute inset-[46px] bg-[#0a0a0a] border-[8px] border-[#1a0f0f] shadow-inner" />
+        <div className="absolute inset-[28px] md:inset-[46px] bg-[#0a0a0a] border-[4px] md:border-[8px] border-[#1a0f0f] shadow-inner" />
 
         {/* The Actual Image Container */}
-        <div className="absolute inset-[62px] overflow-hidden bg-black shadow-[inset_0_0_40px_rgba(0,0,0,1)]">
+        <div className="absolute inset-[36px] md:inset-[62px] overflow-hidden bg-black shadow-[inset_0_0_40px_rgba(0,0,0,1)]">
           {!isLoaded && <div className="absolute inset-0 bg-zinc-900 animate-pulse" />}
           
           <Image
@@ -77,12 +77,12 @@ export function GalleryImage({ src, alt, width, height, index, currentIndex }: G
 
         {/* Antique Corner Reliefs (Subtle, not circular) */}
         {[
-          "top-0 left-0 border-t-8 border-l-8",
-          "top-0 right-0 border-t-8 border-r-8",
-          "bottom-0 left-0 border-b-8 border-l-8",
-          "bottom-0 right-0 border-b-8 border-r-8"
+          "top-0 left-0 border-t-4 md:border-t-8 border-l-4 md:border-l-8",
+          "top-0 right-0 border-t-4 md:border-t-8 border-r-4 md:border-r-8",
+          "bottom-0 left-0 border-b-4 md:border-b-8 border-l-4 md:border-l-8",
+          "bottom-0 right-0 border-b-4 md:border-b-8 border-r-4 md:border-r-8"
         ].map((style, i) => (
-          <div key={i} className={`absolute ${style} w-16 h-16 border-[#ffd700] opacity-40 mix-blend-screen pointer-events-none`} />
+          <div key={i} className={`absolute ${style} w-8 md:w-16 h-8 md:h-16 border-[#ffd700] opacity-40 mix-blend-screen pointer-events-none`} />
         ))}
       </div>
 
