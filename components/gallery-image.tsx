@@ -92,13 +92,5 @@ export function GalleryImage({ src, alt, width, height, index, currentIndex }: G
         </div>
       </div>
     </div>
-
-      {/* Classic Museum Label */}
-      <div className="absolute -bottom-12 left-1/2 -translate-x-1/2 px-4 py-1.5 bg-[#fcf6ba] border border-[#aa771c] shadow-lg transform group-hover:scale-105 transition-all">
-        <div className="text-[10px] tracking-[0.3em] text-[#2d1b1b] font-serif font-bold uppercase text-center">
-          Collection {index + 1}
-        </div>
-      </div>
-    </div>
   )
 }
