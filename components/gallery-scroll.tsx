@@ -32,41 +32,48 @@ export function GalleryScroll() {
   })
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-[#050505] flex flex-col">
-      {/* Dynamic Lighting Overlay */}
-      <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(circle_at_50%_45%,rgba(20,20,20,0)_0%,rgba(0,0,0,0.8)_100%)]" />
+    <div className="relative w-full min-h-[150vh] bg-[#050505] flex flex-col selection:bg-[#d4af37]/30">
+      {/* Dynamic Lighting Overlay - Made absolute to cover full scrollable height */}
+      <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(circle_at_50%_30%,rgba(20,20,20,0)_0%,rgba(0,0,0,0.9)_100%)]" />
       
-      {/* Grainy Texture for high-end look */}
+      {/* Grainy Texture */}
       <div className="absolute inset-0 z-10 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
 
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-8 py-6 bg-gradient-to-b from-black/80 to-transparent">
-        <h1 className="font-serif text-2xl font-light tracking-[0.2em] text-[#d4af37] drop-shadow-sm">MinKyong Hwarang</h1>
-        <div className="flex items-center gap-8 text-[10px] tracking-[0.4em] text-[#8e6d13] uppercase">
-          <span className="hidden md:block">Private Collection</span>
-          <span className="hidden md:block">Est. 2026</span>
+      <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-12 py-6 bg-gradient-to-b from-black/95 to-transparent backdrop-blur-[2px]">
+        <div className="flex flex-col">
+          <h1 className="font-serif text-xl md:text-2xl font-light tracking-[0.3em] text-[#d4af37] drop-shadow-sm">MinKyong Hwarang</h1>
+          <span className="text-[7px] md:text-[8px] tracking-[0.5em] text-[#8e6d13] uppercase opacity-70">Privé & Confidential</span>
+        </div>
+        <div className="flex items-center gap-6 text-[9px] md:text-[10px] tracking-[0.4em] text-[#8e6d13] uppercase">
+          <div className="hidden md:flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#d4af37] animate-pulse" />
+            <span>Members Only</span>
+          </div>
+          <span className="px-3 py-1 border border-[#d4af37]/30 rounded-full">Est. 2026</span>
         </div>
       </header>
 
-      {/* Title Section (Shifted up slightly) */}
-      <div className="fixed inset-x-0 top-[15%] z-20 flex flex-col items-center pointer-events-none">
+      {/* Hero Title Section */}
+      <section className="relative z-20 pt-[25vh] pb-[10vh] flex flex-col items-center pointer-events-none">
         <div className="text-center px-4 max-w-4xl">
-          <p className="text-[10px] tracking-[0.6em] text-[#8e6d13] mb-8 uppercase animate-pulse font-light">The Eternal Moment</p>
-          <div className="relative inline-block">
-            <h2 className="font-serif text-5xl md:text-9xl font-light text-[#fcf6ba] mb-4 leading-tight tracking-tighter drop-shadow-[0_4px_20px_rgba(0,0,0,1)] opacity-95">
+          <p className="text-[9px] md:text-[10px] tracking-[0.7em] text-[#8e6d13] mb-8 uppercase font-light">The Exclusive Collection</p>
+          <div className="relative inline-block mb-12">
+            <h2 className="font-serif text-5xl md:text-9xl font-light text-[#fcf6ba] mb-6 leading-tight tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,1)] opacity-95">
               Royal <span className="italic font-normal">Heritage</span>
             </h2>
-            {/* Elegant underlining ornament */}
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-48 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
-            <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-2 h-2 border border-[#d4af37] rotate-45 bg-black" />
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 md:w-64 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
+            <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1.5 h-1.5 border border-[#d4af37] rotate-45 bg-black" />
           </div>
+          <p className="text-[10px] md:text-xs tracking-[0.5em] text-[#a68a3a] uppercase font-light leading-relaxed max-w-md mx-auto">
+            A sanctuary for the few who appreciate <br className="hidden md:block" /> the art of timeless elegance.
+          </p>
         </div>
-      </div>
+      </section>
 
-      {/* Infinite Gallery Container (Centered in available space, avoiding footer) */}
-      <div className="flex-grow flex items-center justify-center overflow-hidden mb-32">
-        <div className="flex gap-20 md:gap-48 px-32 animate-infinite-scroll">
-          {/* Duplicate set for infinite loop */}
+      {/* Infinite Gallery - Contained in its own section */}
+      <section className="relative z-20 w-full h-[50vh] md:h-[60vh] flex items-center overflow-hidden my-20">
+        <div className="flex gap-24 md:gap-56 px-40 animate-infinite-scroll">
           {[...images, ...images].map((img, index) => (
             <GalleryImage
               key={`${img.id}-${index}`}
@@ -77,48 +84,73 @@ export function GalleryScroll() {
               title={img.title}
               year={img.year}
               index={index % IMAGES_COUNT}
-              currentIndex={-1} // Disable distance logic for infinite scroll
+              currentIndex={-1}
             />
           ))}
         </div>
-      </div>
+      </section>
 
-      {/* Footer / Gallery Info */}
-      <footer className="fixed bottom-0 left-0 right-0 z-30 px-8 py-10">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between gap-8 border-t border-[#d4af37]/20 pt-8">
-          <div className="flex flex-col gap-4">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-[1px] bg-[#d4af37]" />
-              <span className="text-[10px] tracking-[0.5em] text-[#d4af37] uppercase font-serif">Contact</span>
+      {/* Spacer to allow scrolling down to footer */}
+      <div className="h-[20vh]" />
+
+      {/* Footer / Private Gallery Info */}
+      <footer className="relative z-30 w-full px-6 md:px-16 pb-20 pt-32 bg-gradient-to-t from-black to-transparent">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 border-t border-[#d4af37]/20 pt-16">
+            <div className="space-y-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-[1px] bg-[#d4af37]" />
+                <span className="text-[10px] tracking-[0.6em] text-[#d4af37] uppercase font-serif">Inquiry</span>
+              </div>
+              <div className="space-y-2 text-[11px] md:text-[12px] tracking-[0.2em] text-[#8e6d13] font-light italic">
+                <p className="hover:text-[#d4af37] transition-colors cursor-pointer">concierge@minkyong-hwarang.com</p>
+                <p>Private Line: +82 2 1234 5678</p>
+              </div>
+              <p className="text-[9px] tracking-[0.3em] text-[#59421a] leading-relaxed">
+                Admissions by invitation or prior appointment only. <br />
+                Strict confidentiality is maintained for all acquisitions.
+              </p>
             </div>
-            <div className="flex flex-col gap-1 text-[11px] tracking-[0.2em] text-[#8e6d13] font-light italic">
-              <p>contact@minkyong-hwarang.com</p>
-              <p>+82 2 1234 5678</p>
+
+            <div className="flex flex-col items-center justify-center space-y-6">
+              <div className="text-center">
+                <div className="font-serif text-2xl tracking-[0.4em] text-[#d4af37] mb-3 uppercase font-light">MinKyong Hwarang</div>
+                <div className="flex items-center justify-center gap-3 text-[8px] tracking-[0.5em] text-[#59421a] uppercase">
+                  <span>Seoul</span>
+                  <span className="w-1 h-1 rounded-full bg-[#59421a]" />
+                  <span>Paris</span>
+                  <span className="w-1 h-1 rounded-full bg-[#59421a]" />
+                  <span>London</span>
+                </div>
+              </div>
+              <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent" />
+            </div>
+
+            <div className="space-y-6 flex flex-col items-end text-right">
+              <div className="flex items-center gap-4">
+                <span className="text-[10px] tracking-[0.6em] text-[#d4af37] uppercase font-serif">Atelier</span>
+                <div className="w-12 h-[1px] bg-[#d4af37]" />
+              </div>
+              <div className="space-y-2 text-[11px] md:text-[12px] tracking-[0.2em] text-[#8e6d13] font-light uppercase">
+                <p>Tue &mdash; Sat / 10:00 &mdash; 18:00</p>
+                <p className="text-[#d4af37]/60 text-[10px]">Private Viewing by Reservation</p>
+              </div>
+              <div className="flex gap-4 opacity-60">
+                <div className="w-4 h-4 border border-[#d4af37] rounded-full" />
+                <div className="w-4 h-4 border border-[#d4af37] rounded-full" />
+                <div className="w-4 h-4 border border-[#d4af37] rounded-full" />
+              </div>
             </div>
           </div>
-
-          <div className="text-center hidden lg:block">
-            <div className="font-serif text-lg tracking-[0.3em] text-[#d4af37] mb-2">MinKyong Hwarang</div>
-            <p className="text-[9px] tracking-[0.4em] text-[#59421a] uppercase">Seoul &bull; Paris &bull; New York</p>
+          
+          <div className="mt-24 pt-8 border-t border-[#d4af37]/5 text-center">
+            <p className="text-[8px] tracking-[0.6em] text-[#59421a] uppercase opacity-40 italic">
+              This experience is intended for registered patrons of MinKyong Hwarang.
+            </p>
+            <p className="mt-4 text-[7px] tracking-[0.4em] text-[#59421a] uppercase opacity-30">
+              &copy; 2026 MH Group. All Rights Reserved.
+            </p>
           </div>
-
-          <div className="flex flex-col items-end gap-4 text-right">
-            <div className="flex items-center gap-4">
-              <span className="text-[10px] tracking-[0.5em] text-[#d4af37] uppercase font-serif">Hours</span>
-              <div className="w-10 h-[1px] bg-[#d4af37]" />
-            </div>
-            <div className="flex flex-col gap-1 text-[11px] tracking-[0.2em] text-[#8e6d13] font-light uppercase">
-              <p>Tue &mdash; Sat / 11:00 &mdash; 19:00</p>
-              <p>Sunday by Appointment only</p>
-            </div>
-          </div>
-        </div>
-        
-        {/* Subtle bottom-most bar */}
-        <div className="mt-8 text-center">
-          <p className="text-[8px] tracking-[0.5em] text-[#59421a] uppercase opacity-50 italic">
-            &copy; 2026 MinKyong Hwarang. All Rights Reserved.
-          </p>
         </div>
       </footer>
 
