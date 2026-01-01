@@ -1,7 +1,7 @@
 "use client"
 
 import { GalleryImage } from "./gallery-image"
-import { useRef, useState, type ChangeEvent } from "react"
+import { useRef, useState, useEffect, type ChangeEvent } from "react"
 
 const IMAGES_COUNT = 20
 
@@ -18,12 +18,11 @@ const YEARS = [2021, 2022, 2023, 2024, 2025]
 export function GalleryScroll() {
   const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true)
+  const requestRef = useRef<number>(null)
 
   const images = Array.from({ length: IMAGES_COUNT }, (_, i) => {
     const heights = [220, 250, 280, 310, 340]
     const widths = [250, 280, 310, 340]
-    
     return {
       id: i + 1,
       width: widths[(i * 13) % widths.length],
@@ -33,24 +32,37 @@ export function GalleryScroll() {
     }
   })
 
-  const handleScroll = () => {
+  // JS-based Auto Scroll for better control
+  const animate = () => {
     if (scrollRef.current) {
-      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current
-      if (scrollWidth > clientWidth) {
-        const progress = (scrollLeft / (scrollWidth - clientWidth)) * 100
-        setScrollProgress(progress)
+      const { scrollLeft, scrollWidth } = scrollRef.current
+      const halfWidth = scrollWidth / 2
+      
+      // Loop back to start if reaching halfway (since content is duplicated)
+      let nextScroll = scrollLeft + 0.5 // Adjust speed here (0.5px per frame)
+      if (nextScroll >= halfWidth) {
+        nextScroll = 0
       }
+      
+      scrollRef.current.scrollLeft = nextScroll
+      setScrollProgress((nextScroll / halfWidth) * 100)
     }
+    requestRef.current = requestAnimationFrame(animate)
   }
+
+  useEffect(() => {
+    requestRef.current = requestAnimationFrame(animate)
+    return () => {
+      if (requestRef.current) cancelAnimationFrame(requestRef.current)
+    }
+  }, [])
 
   const handleSliderChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = parseFloat(e.target.value)
-    setScrollProgress(value)
-    
     if (scrollRef.current) {
-      const { scrollWidth, clientWidth } = scrollRef.current
-      const scrollAmount = (value / 100) * (scrollWidth - clientWidth)
-      scrollRef.current.scrollLeft = scrollAmount
+      const { scrollWidth } = scrollRef.current
+      const halfWidth = scrollWidth / 2
+      scrollRef.current.scrollLeft = (value / 100) * halfWidth
     }
   }
 
@@ -60,7 +72,7 @@ export function GalleryScroll() {
       <div className="fixed inset-0 z-10 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
 
       <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 md:px-12 py-6 bg-gradient-to-b from-black/95 to-transparent backdrop-blur-[2px]">
-        <div className="flex flex-col">
+        <div className="flex flex-col text-left">
           <h1 className="font-serif text-xl md:text-2xl font-light tracking-[0.3em] text-[#d4af37]">MinKyong Hwarang</h1>
           <span className="text-[7px] md:text-[8px] tracking-[0.5em] text-[#8e6d13] uppercase opacity-70">Privé & Confidential</span>
         </div>
@@ -73,7 +85,7 @@ export function GalleryScroll() {
         </div>
       </header>
 
-      <section className="relative z-20 pt-[25vh] pb-[10vh] flex flex-col items-center text-center">
+      <section className="relative z-20 pt-[25vh] pb-[10vh] flex flex-col items-center text-center px-4">
         <p className="text-[9px] md:text-[10px] tracking-[0.7em] text-[#8e6d13] mb-8 uppercase font-light">The Exclusive Collection</p>
         <div className="relative inline-block mb-12">
           <h2 className="font-serif text-5xl md:text-9xl font-light text-[#fcf6ba] mb-6 leading-tight tracking-tighter drop-shadow-[0_10px_30px_rgba(0,0,0,1)]">
@@ -82,7 +94,7 @@ export function GalleryScroll() {
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-32 md:w-64 h-[1px] bg-gradient-to-r from-transparent via-[#d4af37] to-transparent" />
           <div className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-1.5 h-1.5 border border-[#d4af37] rotate-45 bg-black" />
         </div>
-        <p className="text-[10px] md:text-xs tracking-[0.5em] text-[#a68a3a] uppercase font-light leading-relaxed max-w-md mx-auto px-6">
+        <p className="text-[10px] md:text-xs tracking-[0.5em] text-[#a68a3a] uppercase font-light leading-relaxed max-w-md mx-auto">
           A sanctuary for the few who appreciate the art of timeless elegance.
         </p>
       </section>
@@ -91,12 +103,7 @@ export function GalleryScroll() {
         <div className="w-full overflow-hidden">
           <div 
             ref={scrollRef}
-            onScroll={handleScroll}
-            className={`flex gap-16 md:gap-48 px-[20vw] overflow-x-auto py-20 w-full scroll-smooth no-scrollbar ${isAutoScrolling ? 'animate-infinite-scroll' : ''}`}
-            style={{ 
-              scrollbarWidth: 'none', 
-              msOverflowStyle: 'none'
-            }}
+            className="flex gap-16 md:gap-48 px-[20vw] overflow-x-hidden py-20 w-full no-scrollbar pointer-events-none"
           >
             {[...images, ...images].map((img, index) => (
               <GalleryImage
@@ -117,7 +124,7 @@ export function GalleryScroll() {
         <div className="w-full max-w-2xl px-12 mt-12 flex flex-col items-center gap-4">
           <div className="flex justify-between w-full text-[9px] tracking-[0.4em] text-[#8e6d13] uppercase font-serif">
             <span>Archive 01</span>
-            <span className="text-[#d4af37]">Continuous Flow</span>
+            <span className="text-[#d4af37] tracking-[0.2em] animate-pulse">Continuous Flowing</span>
             <span>Archive 20</span>
           </div>
           
@@ -135,9 +142,8 @@ export function GalleryScroll() {
               }}
             />
           </div>
-          
           <p className="text-[8px] tracking-[0.3em] text-[#59421a] uppercase mt-2 italic text-center">
-            Swipe or slide to navigate the collection
+            Slide to explore while the time flows
           </p>
         </div>
       </section>
@@ -147,7 +153,7 @@ export function GalleryScroll() {
       <footer className="relative z-30 w-full px-6 md:px-16 pb-20 pt-32 bg-gradient-to-t from-black to-transparent">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-8 border-t border-[#d4af37]/20 pt-16">
-            <div className="space-y-6">
+            <div className="space-y-6 text-left">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-[1px] bg-[#d4af37]" />
                 <span className="text-[10px] tracking-[0.6em] text-[#d4af37] uppercase font-serif">Inquiry</span>
@@ -196,16 +202,6 @@ export function GalleryScroll() {
       </footer>
 
       <style jsx global>{`
-        @keyframes infinite-scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .animate-infinite-scroll {
-          display: flex;
-          width: max-content;
-          animation: infinite-scroll 240s linear infinite;
-          will-change: transform;
-        }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
       `}</style>
