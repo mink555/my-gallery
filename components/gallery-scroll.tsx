@@ -1,7 +1,7 @@
 "use client"
 
 import { GalleryImage } from "./gallery-image"
-import { useRef, useState, useEffect, type ChangeEvent } from "react"
+import { useRef, useState, type ChangeEvent, useMemo } from "react"
 
 const IMAGES_COUNT = 20
 
@@ -16,58 +16,32 @@ const TITLES = [
 const YEARS = [2021, 2022, 2023, 2024, 2025]
 
 export function GalleryScroll() {
-  const scrollRef = useRef<HTMLDivElement>(null)
   const [scrollProgress, setScrollProgress] = useState(0)
-  const requestRef = useRef<number>(null)
+  const [isInteracting, setIsInteracting] = useState(false)
 
-  const images = Array.from({ length: IMAGES_COUNT }, (_, i) => {
-    const heights = [220, 250, 280, 310, 340]
-    const widths = [250, 280, 310, 340]
-    return {
-      id: i + 1,
-      width: widths[(i * 13) % widths.length],
-      height: heights[(i * 17) % heights.length],
-      title: TITLES[i % TITLES.length],
-      year: YEARS[(i * 7) % YEARS.length]
-    }
-  })
+  // Memoize images to prevent unnecessary re-renders
+  const images = useMemo(() => Array.from({ length: IMAGES_COUNT }, (_, i) => ({
+    id: i + 1,
+    width: [250, 280, 310, 340][(i * 13) % 4],
+    height: [220, 250, 280, 310, 340][(i * 17) % 5],
+    title: TITLES[i % TITLES.length],
+    year: YEARS[(i * 7) % YEARS.length]
+  })), [])
 
-  // JS-based Auto Scroll for better control
-  const animate = () => {
-    if (scrollRef.current) {
-      const { scrollLeft, scrollWidth } = scrollRef.current
-      const halfWidth = scrollWidth / 2
-      
-      // Loop back to start if reaching halfway (since content is duplicated)
-      let nextScroll = scrollLeft + 0.5 // Adjust speed here (0.5px per frame)
-      if (nextScroll >= halfWidth) {
-        nextScroll = 0
-      }
-      
-      scrollRef.current.scrollLeft = nextScroll
-      setScrollProgress((nextScroll / halfWidth) * 100)
-    }
-    requestRef.current = requestAnimationFrame(animate)
+  // Handle manual slider change
+  const handleSliderChange = (e: ChangeEvent<HTMLInputElement>) => {
+    setIsInteracting(true)
+    const value = parseFloat(e.target.value)
+    setScrollProgress(value)
   }
 
-  useEffect(() => {
-    requestRef.current = requestAnimationFrame(animate)
-    return () => {
-      if (requestRef.current) cancelAnimationFrame(requestRef.current)
-    }
-  }, [])
-
-  const handleSliderChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const value = parseFloat(e.target.value)
-    if (scrollRef.current) {
-      const { scrollWidth } = scrollRef.current
-      const halfWidth = scrollWidth / 2
-      scrollRef.current.scrollLeft = (value / 100) * halfWidth
-    }
+  // Resume auto-scroll after a short delay
+  const handleSliderEnd = () => {
+    setTimeout(() => setIsInteracting(false), 500)
   }
 
   return (
-    <div className="relative w-full min-h-[150vh] bg-[#050505] text-[#fcf6ba] flex flex-col selection:bg-[#d4af37]/30 font-sans">
+    <div className="relative w-full min-h-[150vh] bg-[#050505] text-[#fcf6ba] flex flex-col selection:bg-[#d4af37]/30 font-sans overflow-x-hidden">
       <div className="fixed inset-0 z-10 pointer-events-none bg-[radial-gradient(circle_at_50%_30%,rgba(20,20,20,0)_0%,rgba(0,0,0,0.9)_100%)]" />
       <div className="fixed inset-0 z-10 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
 
@@ -99,11 +73,14 @@ export function GalleryScroll() {
         </p>
       </section>
 
-      <section className="relative z-20 w-full flex flex-col items-center my-12">
-        <div className="w-full overflow-hidden">
+      <section className="relative z-20 w-full flex flex-col items-center my-12 overflow-hidden">
+        <div className="w-full flex justify-center py-20">
           <div 
-            ref={scrollRef}
-            className="flex gap-16 md:gap-48 px-[20vw] overflow-x-hidden py-20 w-full no-scrollbar pointer-events-none"
+            className={`flex gap-16 md:gap-48 px-20 ${!isInteracting ? 'animate-infinite-scroll' : ''}`}
+            style={{ 
+              transform: isInteracting ? `translateX(${-scrollProgress}%)` : undefined,
+              willChange: 'transform'
+            }}
           >
             {[...images, ...images].map((img, index) => (
               <GalleryImage
@@ -124,7 +101,9 @@ export function GalleryScroll() {
         <div className="w-full max-w-2xl px-12 mt-12 flex flex-col items-center gap-4">
           <div className="flex justify-between w-full text-[9px] tracking-[0.4em] text-[#8e6d13] uppercase font-serif">
             <span>Archive 01</span>
-            <span className="text-[#d4af37] tracking-[0.2em] animate-pulse">Continuous Flowing</span>
+            <span className="text-[#d4af37] tracking-[0.2em] animate-pulse">
+              {isInteracting ? 'Adjusting View' : 'Continuous Flow'}
+            </span>
             <span>Archive 20</span>
           </div>
           
@@ -132,14 +111,14 @@ export function GalleryScroll() {
             <input
               type="range"
               min="0"
-              max="100"
-              step="0.1"
+              max="50"
+              step="0.01"
               value={scrollProgress}
               onChange={handleSliderChange}
+              onMouseUp={handleSliderEnd}
+              onTouchEnd={handleSliderEnd}
               className="w-full h-[1px] bg-[#d4af37]/20 appearance-none cursor-pointer outline-none"
-              style={{
-                accentColor: '#d4af37'
-              }}
+              style={{ accentColor: '#d4af37' }}
             />
           </div>
           <p className="text-[8px] tracking-[0.3em] text-[#59421a] uppercase mt-2 italic text-center">
@@ -164,8 +143,8 @@ export function GalleryScroll() {
               </div>
             </div>
 
-            <div className="flex flex-col items-center justify-center space-y-6">
-              <div className="text-center">
+            <div className="flex flex-col items-center justify-center space-y-6 text-center">
+              <div>
                 <div className="font-serif text-2xl tracking-[0.4em] text-[#d4af37] mb-3 uppercase font-light">MinKyong Hwarang</div>
                 <div className="flex items-center justify-center gap-3 text-[8px] tracking-[0.5em] text-[#59421a] uppercase">
                   <span>Seoul</span>
@@ -189,9 +168,8 @@ export function GalleryScroll() {
               </div>
             </div>
           </div>
-          
           <div className="mt-24 pt-8 border-t border-[#d4af37]/5 text-center">
-            <p className="text-[8px] tracking-[0.6em] text-[#59421a] uppercase opacity-40 italic">
+            <p className="text-[8px] tracking-[0.6em] text-[#59421a] uppercase opacity-40 italic font-serif">
               This experience is intended for registered patrons of MinKyong Hwarang.
             </p>
             <p className="mt-4 text-[7px] tracking-[0.4em] text-[#59421a] uppercase opacity-30">
@@ -202,8 +180,13 @@ export function GalleryScroll() {
       </footer>
 
       <style jsx global>{`
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        @keyframes infinite-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+        .animate-infinite-scroll {
+          animation: infinite-scroll 240s linear infinite;
+        }
       `}</style>
     </div>
   )
