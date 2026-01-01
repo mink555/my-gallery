@@ -84,6 +84,45 @@ export function GalleryScroll() {
         </div>
       </div>
 
+      {/* Footer / Gallery Info */}
+      <footer className="fixed bottom-0 left-0 right-0 z-30 px-8 py-10">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-end justify-between gap-8 border-t border-[#d4af37]/20 pt-8">
+          <div className="flex flex-col gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-10 h-[1px] bg-[#d4af37]" />
+              <span className="text-[10px] tracking-[0.5em] text-[#d4af37] uppercase font-serif">Contact</span>
+            </div>
+            <div className="flex flex-col gap-1 text-[11px] tracking-[0.2em] text-[#8e6d13] font-light italic">
+              <p>contact@minkyong-hwarang.com</p>
+              <p>+82 2 1234 5678</p>
+            </div>
+          </div>
+
+          <div className="text-center hidden lg:block">
+            <div className="font-serif text-lg tracking-[0.3em] text-[#d4af37] mb-2">MinKyong Hwarang</div>
+            <p className="text-[9px] tracking-[0.4em] text-[#59421a] uppercase">Seoul &bull; Paris &bull; New York</p>
+          </div>
+
+          <div className="flex flex-col items-end gap-4 text-right">
+            <div className="flex items-center gap-4">
+              <span className="text-[10px] tracking-[0.5em] text-[#d4af37] uppercase font-serif">Hours</span>
+              <div className="w-10 h-[1px] bg-[#d4af37]" />
+            </div>
+            <div className="flex flex-col gap-1 text-[11px] tracking-[0.2em] text-[#8e6d13] font-light uppercase">
+              <p>Tue &mdash; Sat / 11:00 &mdash; 19:00</p>
+              <p>Sunday by Appointment only</p>
+            </div>
+          </div>
+        </div>
+        
+        {/* Subtle bottom-most bar */}
+        <div className="mt-8 text-center">
+          <p className="text-[8px] tracking-[0.5em] text-[#59421a] uppercase opacity-50 italic">
+            &copy; 2026 MinKyong Hwarang. All Rights Reserved.
+          </p>
+        </div>
+      </footer>
+
       <style jsx global>{`
         @keyframes infinite-scroll {
           from {
