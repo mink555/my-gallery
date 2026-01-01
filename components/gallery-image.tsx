@@ -8,11 +8,13 @@ interface GalleryImageProps {
   alt: string
   width: number
   height: number
+  title: string
+  year: number
   index: number
   currentIndex: number
 }
 
-export function GalleryImage({ src, alt, width, height, index, currentIndex }: GalleryImageProps) {
+export function GalleryImage({ src, alt, width, height, title, year, index, currentIndex }: GalleryImageProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   
   const distance = currentIndex === -1 ? 0 : Math.abs(currentIndex - index)
@@ -86,9 +88,15 @@ export function GalleryImage({ src, alt, width, height, index, currentIndex }: G
       </div>
 
       {/* Museum Label */}
-      <div className="absolute -bottom-14 left-1/2 -translate-x-1/2 px-6 py-2 bg-[#0a0a0a] border border-[#d4af37]/40 shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-2 group-hover:translate-y-0">
-        <div className="text-[9px] tracking-[0.5em] text-[#d4af37] font-serif uppercase text-center whitespace-nowrap">
-          Heritage No. {index + 1}
+      <div className="absolute -bottom-20 left-1/2 -translate-x-1/2 px-6 py-3 bg-[#0a0a0a]/90 backdrop-blur-sm border border-[#d4af37]/30 shadow-2xl opacity-0 group-hover:opacity-100 transition-all duration-700 transform translate-y-4 group-hover:translate-y-0 min-w-[180px]">
+        <div className="flex flex-col items-center gap-1">
+          <div className="text-[10px] tracking-[0.4em] text-[#d4af37] font-serif uppercase text-center font-bold">
+            {title}
+          </div>
+          <div className="h-[0.5px] w-8 bg-[#d4af37]/40 my-1" />
+          <div className="text-[8px] tracking-[0.3em] text-[#8e6d13] font-serif uppercase text-center">
+            {year} &bull; Private Collection
+          </div>
         </div>
       </div>
     </div>

@@ -9,12 +9,22 @@ export function GalleryScroll() {
   const images = Array.from({ length: IMAGES_COUNT }, (_, i) => {
     const heights = [300, 350, 400, 450, 500]
     const widths = [250, 280, 310, 340]
+    
+    const titles = [
+      "Whispers of Light", "Golden Silence", "Autumn Reverie", "Midnight Sonata",
+      "Eternal Grace", "Oceanic Dream", "Urban Solitude", "Ethereal Morning",
+      "Shadows of Time", "Petals in Rain", "Rustic Soul", "Velvet Twilight",
+      "Infinite Horizon", "Serene Soul", "Faded Memories", "Pure Harmony",
+      "Distant Echoes", "Morning Dew", "Secret Path", "Ancient Glow"
+    ]
+    const years = [2021, 2022, 2023, 2024, 2025]
 
     return {
       id: i + 1,
-      // Use index to pick values consistently between server and client
       width: widths[(i * 13) % widths.length],
       height: heights[(i * 17) % heights.length],
+      title: titles[i % titles.length],
+      year: years[(i * 7) % years.length]
     }
   })
 
@@ -55,9 +65,11 @@ export function GalleryScroll() {
             <GalleryImage
               key={`${img.id}-${index}`}
               src={`https://picsum.photos/${img.width}/${img.height}?random=${img.id}`}
-              alt={`Gallery image ${img.id}`}
+              alt={img.title}
               width={img.width}
               height={img.height}
+              title={img.title}
+              year={img.year}
               index={index % IMAGES_COUNT}
               currentIndex={-1} // Disable distance logic for infinite scroll
             />
