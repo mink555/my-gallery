@@ -19,30 +19,37 @@ export function GalleryScroll() {
   })
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-background">
+    <div className="relative w-full h-screen overflow-hidden bg-[#050505]">
+      {/* Dynamic Lighting Overlay */}
+      <div className="absolute inset-0 z-10 pointer-events-none bg-[radial-gradient(circle_at_50%_50%,rgba(20,20,20,0)_0%,rgba(0,0,0,0.8)_100%)]" />
+      
+      {/* Grainy Texture for high-end look */}
+      <div className="absolute inset-0 z-10 pointer-events-none opacity-[0.03] mix-blend-overlay bg-[url('https://www.transparenttextures.com/patterns/stardust.png')]" />
+
       {/* Header */}
-      <header className="fixed top-0 left-0 right-0 z-20 flex items-center justify-between px-8 py-6 bg-gradient-to-b from-background/90 to-transparent">
-        <h1 className="font-serif text-2xl font-light tracking-wider text-primary">MinKyong Hwarang</h1>
-        <div className="flex items-center gap-8 text-sm tracking-widest text-muted-foreground">
-          <span className="hidden md:block">EXHIBITION</span>
-          <span className="hidden md:block">2026</span>
+      <header className="fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-8 py-6 bg-gradient-to-b from-black/80 to-transparent">
+        <h1 className="font-serif text-2xl font-light tracking-[0.2em] text-[#d4af37] drop-shadow-sm">MinKyong Hwarang</h1>
+        <div className="flex items-center gap-8 text-[10px] tracking-[0.4em] text-[#8e6d13] uppercase">
+          <span className="hidden md:block">Private Collection</span>
+          <span className="hidden md:block">Est. 2026</span>
         </div>
       </header>
 
       {/* Title Section */}
-      <div className="fixed inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
-        <div className="text-center px-4">
-          <p className="text-xs tracking-[0.3em] text-muted-foreground mb-4 uppercase animate-pulse">Infinite Journey</p>
-          <h2 className="font-serif text-4xl md:text-7xl lg:text-8xl font-light text-[#f3e5ab] mb-6 text-balance drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-            Royal Gallery
+      <div className="fixed inset-0 z-20 flex flex-col items-center justify-center pointer-events-none">
+        <div className="text-center px-4 max-w-4xl">
+          <p className="text-[10px] tracking-[0.5em] text-[#8e6d13] mb-6 uppercase animate-pulse">The Eternal Moment</p>
+          <h2 className="font-serif text-5xl md:text-8xl font-light text-[#fcf6ba] mb-8 leading-tight tracking-tight drop-shadow-[0_4px_12px_rgba(0,0,0,0.9)] opacity-90">
+            Royal <span className="italic">Heritage</span>
           </h2>
-          <p className="text-sm tracking-[0.2em] text-muted-foreground uppercase">Flowing through time</p>
+          <div className="h-[1px] w-24 bg-gradient-to-r from-transparent via-[#d4af37] to-transparent mx-auto mb-8" />
+          <p className="text-xs tracking-[0.3em] text-[#a68a3a] uppercase font-light">Elegance in Motion</p>
         </div>
       </div>
 
       {/* Infinite Gallery Container */}
       <div className="absolute inset-0 flex items-center overflow-hidden">
-        <div className="flex gap-16 md:gap-32 px-12 animate-infinite-scroll">
+        <div className="flex gap-16 md:gap-40 px-24 animate-infinite-scroll">
           {/* Duplicate set for infinite loop */}
           {[...images, ...images].map((img, index) => (
             <GalleryImage
@@ -71,11 +78,12 @@ export function GalleryScroll() {
           display: flex;
           width: max-content;
           animation: infinite-scroll 240s linear infinite;
+          will-change: transform;
         }
-        /* Pause on hover for better UX */
-        .animate-infinite-scroll:hover {
+        /* Remove the pause-on-hover that might be causing freezing/interruption on touch */
+        /* .animate-infinite-scroll:hover {
           animation-play-state: paused;
-        }
+        } */
       `}</style>
     </div>
   )
